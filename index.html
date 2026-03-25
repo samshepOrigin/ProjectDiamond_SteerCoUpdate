@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Diamond - March 2026 SteerCo Update</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        /* Spinning Diamond Animation */
+        .diamond-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px 20px;
+            background: linear-gradient(135deg, #003058 0%, #004080 100%);
+        }
+        
+        .diamond {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spin 4s linear infinite;
+        }
+        
+        .diamond-face {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        
+        .diamond-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-bottom: 40px solid #FA4616;
+            filter: drop-shadow(0 0 20px rgba(250, 70, 22, 0.6));
+        }
+        
+        .diamond-middle-left {
+            top: 40px;
+            left: 0;
+            border-top: 40px solid #FF6B35;
+            border-right: 60px solid transparent;
+            border-bottom: 40px solid transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 107, 53, 0.5));
+        }
+        
+        .diamond-middle-right {
+            top: 40px;
+            right: 0;
+            border-top: 40px solid #FF8C42;
+            border-left: 60px solid transparent;
+            border-bottom: 40px solid transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 140, 66, 0.5));
+        }
+        
+        .diamond-bottom {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+            border-top: 40px solid #FFA500;
+            filter: drop-shadow(0 0 25px rgba(255, 165, 0, 0.7));
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotateY(0deg) rotateX(10deg);
+            }
+            100% {
+                transform: rotateY(360deg) rotateX(10deg);
+            }
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        .sparkle:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 30%; right: 15%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { bottom: 20%; left: 25%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { top: 50%; right: 20%; animation-delay: 1.5s; }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        header {
+            background: linear-gradient(135deg, #003058 0%, #004080 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .status-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .status-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .status-card h3 {
+            color: #003058;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .rag-indicator {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            background: #22c55e;
+            color: white;
+            box-shadow: 0 3px 10px rgba(34, 197, 94, 0.3);
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .section:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .section-header {
+            background: linear-gradient(135deg, #FA4616 0%, #FF6B35 100%);
+            color: white;
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+        
+        .section-header:hover {
+            background: linear-gradient(135deg, #FF6B35 0%, #FA4616 100%);
+        }
+        
+        .section-header h2 {
+            font-size: 1.5em;
+        }
+        
+        .toggle-icon {
+            font-size: 1.5em;
+            transition: transform 0.3s ease;
+        }
+        
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, padding 0.3s ease;
+            background: #fafafa;
+        }
+        
+        .section-content.active {
+            max-height: 5000px;
+            padding: 25px;
+        }
+        
+        .subsection {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .subsection h3 {
+            color: #003058;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #FA4616;
+            padding-bottom: 10px;
+        }
+        
+        .subsection h4 {
+            color: #004080;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        a {
+            color: #FA4616;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        a:hover {
+            color: #003058;
+            text-decoration: underline;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th {
+            background: linear-gradient(135deg, #003058 0%, #004080 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f5f7fa;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        
+        .badge-complete {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .badge-progress {
+            background: #3b82f6;
+            color: white;
+        }
+        
+        .badge-planned {
+            background: #8b5cf6;
+            color: white;
+        }
+        
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+            margin-top: 30px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #FA4616, #003058);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 25px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: #FA4616;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #FA4616;
+        }
+        
+        .timeline-item h4 {
+            color: #003058;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            background: #f5f7fa;
+            padding: 30px 40px;
+            text-align: center;
+            color: #666;
+            border-top: 3px solid #FA4616;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .status-overview {
+                grid-template-columns: 1fr;
+            }
+            
+            .diamond {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .diamond-top, .diamond-bottom {
+                border-left-width: 40px;
+                border-right-width: 40px;
+                border-bottom-width: 30px;
+                border-top-width: 30px;
+            }
+            
+            .diamond-middle-left, .diamond-middle-right {
+                border-top-width: 30px;
+                border-right-width: 40px;
+                border-left-width: 40px;
+                border-bottom-width: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Spinning Diamond Animation -->
+        <div class="diamond-container">
+            <div style="position: relative;">
+                <div class="diamond">
+                    <div class="diamond-face diamond-top"></div>
+                    <div class="diamond-face diamond-middle-left"></div>
+                    <div class="diamond-face diamond-middle-right"></div>
+                    <div class="diamond-face diamond-bottom"></div>
+                </div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+            </div>
+        </div>
+        
+        <!-- Header -->
+        <header>
+            <h1>💎 Project Diamond</h1>
+            <p>Steering Committee Update | March 2026</p>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Status Overview -->
+            <div class="status-overview">
+                <div class="status-card">
+                    <h3>Overall Status</h3>
+                    <span class="rag-indicator">● Green</span>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">On Track</p>
+                </div>
+                <div class="status-card">
+                    <h3>Schedule & Resourcing</h3>
+                    <span class="rag-indicator">● Green</span>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">On Track</p>
+                </div>
+                <div class="status-card">
+                    <h3>Scope & Benefit</h3>
+                    <span class="rag-indicator">● Green</span>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">On Track</p>
+                </div>
+                <div class="status-card">
+                    <h3>Funding</h3>
+                    <span class="rag-indicator">● Green</span>
+                    <p style="margin-top: 10px; font-size: 0.9em; color: #666;">On Track</p>
+                </div>
+            </div>
+            
+            <!-- Section 1: Project Management -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>📊 Project Management</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content active">
+                    <div class="subsection">
+                        <h3>Focus Areas</h3>
+                        <ul>
+                        <li>Finalise FY27 Budget</li>
+                        <li>Business Benefit review & tracking</li>
+                        <li>Improve Inventory reconciliation process</li>
+                        <li>Improve position transparency and quality management</li>
+                        <li>PIR from LRET Surrender - Technical Complete.  Business Scheduled for week starting 30th March </li>
+                            <li><strong>RPA Service SLAs:</strong> New operating model being established</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h3>People & Resources</h3>
+                        <ul>
+                            <li><strong>Capspire Resources:</strong> Successfully onboarded for Finance Dev/Technical FA roles</li>
+                            <li><strong>Mantel Resources:</strong> Engagement concluding end of March 2026</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h3>Business Process & Quality Reviews</h3>
+                        <ul>
+                            <li><strong>RDDP Change Controls:</strong> Enhanced governance processes implemented</li>
+                            <li><strong>Surrender Process:</strong> Supporting Greenpower audit requirements</li>
+                            <li><strong>Surrender Process:</strong> Supporting Voluntary surrender </li>
+			    <li><strong>OZ Contract Capture:</strong> Primary focus area for data quality</li>
+                            <li><strong>Issue 9:</strong> Ongoing attention to contract attributes - <a href="https://origin.sharepoint.com/sites/WholsaleCarbonUplift/Lists/Issue%20tracker%20list/DispForm.aspx?ID=14&e=OR4wjf" target="_blank">View Issue Tracker</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 2: Phase 3 - Allocation Engine & LRET -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🔧 Phase 3: Allocation Engine & LRET</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <h3>Overview</h3>
+                        <p><a href="https://app.asana.com/1/13216722466452/project/1210959911837112/task/1210959911837206" target="_blank">View in Asana →</a></p>
+                        
+                        <h4>Release 4.2 - Complete ✅</h4>
+                        <ul>
+                            <li>Holdings additional information successfully deployed</li>
+                            <li>All testing completed and signed off</li>
+                        </ul>
+                        
+                        <h4>Release 4.3 - Planned 📅</h4>
+                        <ul>
+                            <li>Stipulation code maintenance enhancements</li>
+                            <li>Green power allocation improvements</li>
+                            <li>Expected deployment: Q2 2026</li>
+                        </ul>
+                        
+                        <h4>Release 4.5 - Build 🔨</h4>
+                        <ul>
+                            <li>SRET Allocations development in progress</li>
+                            <li>Soft allocations functionality</li>
+                            <li>Integration testing planned for April 2026</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 3: Phase 4 - SRET -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>⚡ Phase 4: SRET Position & Settlement</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <h3>Overview</h3>
+                        <p><a href="https://app.asana.com/1/13216722466452/project/1210959911837112/task/1210946605634168" target="_blank">View in Asana →</a></p>
+                        
+                        <h4>Current Status</h4>
+                        <ul>
+                            <li><strong>Demand:</strong> Live with some interim methodology challenges for finance</li>
+                            <li><strong>Trade Migration:</strong> Currently entering UAT phase</li>
+                            <li><strong>Forecast Completion:</strong> 20 April 2026 (Baseline: 28 February 2026)</li>
+                        </ul>
+                        
+                        <h4>Release 4.4 - Go Live Activities</h4>
+                        <ul>
+                            <li>Cutover planning and execution</li>
+                            <li>Parallel run with legacy systems</li>
+                            <li>iQ system adaptations and integration</li>
+                        </ul>
+                        
+                        <h4>Key Challenges</h4>
+                        <ul>
+                            <li><strong>SRES Complexity:</strong> Clearing house offers and acceptance processes</li>
+                            <li><strong>STC Integration:</strong> Renew Eclipse tiered pricing configuration</li>
+                            <li><strong>Interim Methodology:</strong> Finance reconciliation processes being refined</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h3>SRET Go Live Preparation Timeline</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <h4>✅ Demand Go Live - Complete</h4>
+                                <p>Successfully deployed demand functionality with interim finance methodology</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>🔄 Trade Migration UAT - In Progress</h4>
+                                <p>User acceptance testing underway for trade migration module</p>
+                                <p><strong>Expected Completion:</strong> End of March 2026</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>📋 Parallel Run - Upcoming</h4>
+                                <p>Execute parallel run for SRET Surrender process</p>
+                                <p><strong>Scheduled:</strong> Early April 2026</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>🎯 iQ Migration - Planned</h4>
+                                <p>Finalize iQ migration preparations and integration testing</p>
+                                <p><strong>Target:</strong> Mid-April 2026</p>
+                            </div>
+                            <div class="timeline-item">
+                                <h4>🚀 Full Go Live - Target</h4>
+                                <p>Complete SRET Position & Settlement go live</p>
+                                <p><strong>Forecast:</strong> 20 April 2026</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 4: Phase 5 - v24 Upgrade -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>⬆️ Phase 5: v24 Upgrade</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <h3>Overview</h3>
+                        <p><a href="https://app.asana.com/1/13216722466452/project/1210959911837112/task/1210959911837210" target="_blank">View in Asana →</a></p>
+                        
+                        <h4>Resource Onboarding</h4>
+                        <ul>
+                            <li>2 Capspire resources successfully onboarded</li>
+                            <li>Technical FA and Finance Dev expertise in place</li>
+                        </ul>
+                        
+                        <h4>Current Sprint Focus</h4>
+                        <ul>
+                            <li>Reviewing P&L requirements and configurations</li>
+                            <li>Shadow month-end activities planned</li>
+                            <li>Integration testing with existing modules</li>
+                        </ul>
+                        
+                        <h4>Timeline</h4>
+                        <ul>
+                            <li><strong>Go Live Target:</strong> FY27</li>
+                            <li><strong>Current Phase:</strong> Requirements gathering and sprint planning</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 5: Phase 6 - Other Schemes -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🌿 Phase 6: Other Schemes (ACCU, VCU, ACE)</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <h3>Overview</h3>
+                        <p><a href="https://app.asana.com/1/13216722466452/project/1210959911837112/task/1210946605634178" target="_blank">View in Asana →</a></p>
+                        
+                        <h4>Current Activities</h4>
+                        <ul>
+                            <li><strong>Master Data Setup:</strong> Configuration for remaining schemes in progress</li>
+                            <li><strong>Trade Migration Spec:</strong> Finalization underway</li>
+                            <li><strong>ACCU Build:</strong> Development commencing</li>
+                            <li><strong>VCU Build:</strong> Development commencing</li>
+                        </ul>
+                        
+                        <h4>Timeline</h4>
+                        <ul>
+                            <li><strong>Forecast Completion:</strong> 15 June 2026</li>
+                            <li><strong>Current Status:</strong> In Progress</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Section 6: Key Milestones -->
+            <div class="section">
+                <div class="section-header" onclick="toggleSection(this)">
+                    <h2>🎯 Key Milestones Overview</h2>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="section-content">
+                    <div class="subsection">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Workstream</th>
+                                    <th>Delivery Team</th>
+                                    <th>Status</th>
+                                    <th>Baseline Finish</th>
+                                    <th>Forecast Finish</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Phase 3 MPV1</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-complete">Complete</span></td>
+                                    <td>30/06/2024</td>
+                                    <td>10/07/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 3 MPV3</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-complete">Complete</span></td>
+                                    <td>30/09/2024</td>
+                                    <td>22/10/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 3 MPV3.1</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-complete">Complete</span></td>
+                                    <td>30/11/2024</td>
+                                    <td>20/12/2024</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 3 MPV3.2</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-complete">Complete</span></td>
+                                    <td>31/01/2025</td>
+                                    <td>31/01/2025</td>
+                                </tr>
+                                <tr style="background: #fff3cd;">
+                                    <td><strong>Phase 4 SRET</strong></td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-progress">In Progress</span></td>
+                                    <td>28/02/2026</td>
+                                    <td><strong>20/04/2026</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 5 v24 Upgrade</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-progress">In Progress</span></td>
+                                    <td>FY27</td>
+                                    <td>FY27</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 6 Remaining Schemes</td>
+                                    <td>Capgemini</td>
+                                    <td><span class="badge badge-progress">In Progress</span></td>
+                                    <td>30/04/2026</td>
+                                    <td>15/06/2026</td>
+                                </tr>
+                                <tr>
+                                    <td>Phase 7 Trading Strategy</td>
+                                    <td>TBD</td>
+                                    <td><span class="badge badge-planned">Planned</span></td>
+                                    <td>FY27</td>
+                                    <td>FY27</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer>
+            <p><strong>Project Diamond</strong> | Steering Committee Update</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">For questions or additional information, please contact the Project Management Office</p>
+            <p style="margin-top: 15px; font-size: 0.85em; color: #999;">Generated: March 2026</p>
+        </footer>
+    </div>
+    
+    <script>
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.toggle-icon');
+            
+            content.classList.toggle('active');
+            
+            if (content.classList.contains('active')) {
+                icon.textContent = '▼';
+            } else {
+                icon.textContent = '▶';
+            }
+        }
+        
+        // Auto-open first section on load
+        document.addEventListener('DOMContentLoaded', function() {
+            const firstSection = document.querySelector('.section-content');
+            if (firstSection && !firstSection.classList.contains('active')) {
+                firstSection.previousElementSibling.click();
+            }
+        });
+    </script>
+</body>
+</html>
